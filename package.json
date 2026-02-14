@@ -5,8 +5,9 @@
   "private": true,
   "scripts": {
     "server": "bun run src/server.ts",
+    "worker": "bun run src/worker.ts",
     "menu": "bun run src/index.ts",
-    "dev": "lsof -ti:3000 | xargs kill -9 || true; bun run src/server.ts & sleep 2 && bun run src/index.ts"
+    "dev": "lsof -ti:3000 | xargs kill -9 || true; bun run src/server.ts & bun run src/worker.ts & sleep 2 && bun run src/index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",

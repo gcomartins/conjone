@@ -1203,3 +1203,187 @@
 [debug] [2026-02-14T19:49:40.708Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo {"name":"projects/conjone-bot-test-2026/billingInfo","projectId":"conjone-bot-test-2026","billingAccountName":"","billingEnabled":false}
 [debug] [2026-02-14T19:49:40.711Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
 [debug] [2026-02-14T19:49:40.712Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:48:24.376Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:48:24.377Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:48:24.378Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:24.378Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:24.378Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:48:24.378Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:48:24.378Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:24.378Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:24.379Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo [none]
+[debug] [2026-02-14T20:48:24.380Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo [none]
+[debug] [2026-02-14T20:48:25.632Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo 200
+[debug] [2026-02-14T20:48:25.633Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo {"name":"projects/conjone-bot-test-2026/billingInfo","projectId":"conjone-bot-test-2026","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-14T20:48:25.639Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.639Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.639Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.639Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.639Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.639Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.644Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.644Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.644Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.644Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.644Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com [none]
+[debug] [2026-02-14T20:48:25.644Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:48:25.645Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-14T20:48:25.645Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:48:25.645Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com [none]
+[debug] [2026-02-14T20:48:25.645Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:48:25.646Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-02-14T20:48:25.646Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:48:25.646Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com [none]
+[debug] [2026-02-14T20:48:25.646Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:48:25.718Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo 200
+[debug] [2026-02-14T20:48:25.718Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo {"name":"projects/conjone-bot-test-2026/billingInfo","projectId":"conjone-bot-test-2026","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-14T20:48:25.718Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.718Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.718Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.718Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.718Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.718Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.720Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.720Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.720Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.720Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:25.721Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com [none]
+[debug] [2026-02-14T20:48:25.721Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:48:25.722Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-14T20:48:25.722Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:48:25.723Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com [none]
+[debug] [2026-02-14T20:48:25.723Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:48:25.724Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-02-14T20:48:25.724Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:48:25.724Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com [none]
+[debug] [2026-02-14T20:48:25.724Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:48:26.535Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com 403
+[debug] [2026-02-14T20:48:26.535Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com [omitted]
+[debug] [2026-02-14T20:48:26.628Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-02-14T20:48:26.628Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2026-02-14T20:48:26.634Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com 200
+[debug] [2026-02-14T20:48:26.634Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2026-02-14T20:48:26.639Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com 200
+[debug] [2026-02-14T20:48:26.639Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com [omitted]
+[debug] [2026-02-14T20:48:26.825Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-14T20:48:26.826Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-14T20:48:27.309Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com 403
+[debug] [2026-02-14T20:48:27.309Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com [omitted]
+[debug] [2026-02-14T20:48:27.482Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com 200
+[debug] [2026-02-14T20:48:27.482Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2026-02-14T20:48:27.539Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-02-14T20:48:27.539Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2026-02-14T20:48:27.548Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com 200
+[debug] [2026-02-14T20:48:27.548Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com [omitted]
+[debug] [2026-02-14T20:48:27.703Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-14T20:48:27.703Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-14T20:48:27.778Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:48:27.779Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:48:27.779Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:27.779Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:27.780Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo [none]
+[debug] [2026-02-14T20:48:29.019Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo 200
+[debug] [2026-02-14T20:48:29.019Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo {"name":"projects/conjone-bot-test-2026/billingInfo","projectId":"conjone-bot-test-2026","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-14T20:48:29.022Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:48:29.022Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:48:29.097Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:48:29.098Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:48:29.098Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:29.098Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:48:29.098Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo [none]
+[debug] [2026-02-14T20:48:30.220Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo 200
+[debug] [2026-02-14T20:48:30.220Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo {"name":"projects/conjone-bot-test-2026/billingInfo","projectId":"conjone-bot-test-2026","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-14T20:48:30.223Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:48:30.223Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:58:47.769Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:58:47.771Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:58:47.771Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:47.771Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:47.771Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:58:47.771Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:58:47.771Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:47.771Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:47.772Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo [none]
+[debug] [2026-02-14T20:58:47.773Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo [none]
+[debug] [2026-02-14T20:58:49.021Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo 200
+[debug] [2026-02-14T20:58:49.021Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo {"name":"projects/conjone-bot-test-2026/billingInfo","projectId":"conjone-bot-test-2026","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-14T20:58:49.026Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.026Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.027Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.027Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.027Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.027Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.034Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.034Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.034Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.034Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.034Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com [none]
+[debug] [2026-02-14T20:58:49.034Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:58:49.035Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-14T20:58:49.035Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:58:49.036Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com [none]
+[debug] [2026-02-14T20:58:49.036Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:58:49.036Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-02-14T20:58:49.036Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:58:49.037Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com [none]
+[debug] [2026-02-14T20:58:49.037Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:58:49.052Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo 200
+[debug] [2026-02-14T20:58:49.052Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo {"name":"projects/conjone-bot-test-2026/billingInfo","projectId":"conjone-bot-test-2026","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-14T20:58:49.053Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.053Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.053Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.053Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.053Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.053Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.055Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.055Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.055Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.055Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:49.055Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com [none]
+[debug] [2026-02-14T20:58:49.055Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:58:49.056Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-14T20:58:49.056Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:58:49.057Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com [none]
+[debug] [2026-02-14T20:58:49.057Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:58:49.057Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-02-14T20:58:49.057Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:58:49.058Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com [none]
+[debug] [2026-02-14T20:58:49.058Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com  x-goog-user-project=conjone-bot-test-2026
+[debug] [2026-02-14T20:58:49.942Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com 403
+[debug] [2026-02-14T20:58:49.942Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com [omitted]
+[debug] [2026-02-14T20:58:49.960Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com 403
+[debug] [2026-02-14T20:58:49.960Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseio.com [omitted]
+[debug] [2026-02-14T20:58:50.035Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-14T20:58:50.035Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-14T20:58:50.036Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-02-14T20:58:50.036Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2026-02-14T20:58:50.041Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com 200
+[debug] [2026-02-14T20:58:50.041Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2026-02-14T20:58:50.050Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-02-14T20:58:50.050Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2026-02-14T20:58:50.055Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com 200
+[debug] [2026-02-14T20:58:50.055Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com [omitted]
+[debug] [2026-02-14T20:58:50.065Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com 200
+[debug] [2026-02-14T20:58:50.065Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firestore.googleapis.com [omitted]
+[debug] [2026-02-14T20:58:50.089Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com 200
+[debug] [2026-02-14T20:58:50.089Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2026-02-14T20:58:50.094Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-14T20:58:50.094Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/conjone-bot-test-2026/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-14T20:58:50.172Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:58:50.172Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:58:50.173Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:50.173Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:50.173Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo [none]
+[debug] [2026-02-14T20:58:51.300Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo 200
+[debug] [2026-02-14T20:58:51.301Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo {"name":"projects/conjone-bot-test-2026/billingInfo","projectId":"conjone-bot-test-2026","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-14T20:58:51.303Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:58:51.303Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:58:51.374Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:58:51.374Z] > authorizing via signed-in user (gcomartins@gmail.com)
+[debug] [2026-02-14T20:58:51.375Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:51.375Z] Checked if tokens are valid: true, expires at: 1771104967952
+[debug] [2026-02-14T20:58:51.375Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo [none]
+[debug] [2026-02-14T20:58:52.616Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo 200
+[debug] [2026-02-14T20:58:52.616Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/conjone-bot-test-2026/billingInfo {"name":"projects/conjone-bot-test-2026/billingInfo","projectId":"conjone-bot-test-2026","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-14T20:58:52.617Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:58:52.617Z] > authorizing via signed-in user (gcomartins@gmail.com)

@@ -39,6 +39,7 @@ async function bootstrap() {
   }
 
   setInterval(async () => {
+    // Monitor de comandos manuais do Menu
     const cmd = db.prepare('SELECT value FROM system_control WHERE key = "cmd"').get() as any;
     if (cmd?.value === 'CONNECT_WA') {
       db.prepare('DELETE FROM system_control WHERE key = "cmd"').run();
@@ -46,6 +47,17 @@ async function bootstrap() {
         logger.log('WHATSAPP', 'Iniciando socket Baileys via comando manual...');
         const sock = await whatsapp.start();
         setupEvents(sock);
+      }
+    }
+
+    // MONITOR DE NOTIFICAÇÕES DO WORKER (AUDITORIA)
+    const notify = db.prepare('SELECT value FROM system_control WHERE key = "notify_owner"').get() as any;
+    if (notify?.value && whatsapp.sock) {
+      db.prepare('DELETE FROM system_control WHERE key = "notify_owner"').run();
+      // Busca o seu número (o dono) - pegamos o primeiro usuário do banco como dono por enquanto
+      const owner: any = db.prepare('SELECT whatsapp_number FROM users ORDER BY created_at ASC LIMIT 1').get();
+      if (owner?.whatsapp_number) {
+        await whatsapp.sendMessage(owner.whatsapp_number, `📊 *RELATÓRIO DE AUDITORIA*\n\n${notify.value}`);
       }
     }
   }, 2000);
