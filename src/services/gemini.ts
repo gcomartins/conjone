@@ -4,64 +4,40 @@ import { whatsapp } from "./whatsapp";
 import path from "node:path";
 
 export class GeminiService {
-  /**
-   * Executa o Gemini CLI e captura o stdout puro como resposta.
-   * Os logs de carregamento do sistema vão para o stderr, portanto o stdout
-   * contém apenas o que o modelo/agente gerou.
-   */
   async chat(from: string, userMessage: string) {
-    logger.log('AGENTE', `Processando comando para ${from}`);
+    logger.log('AGENTE', `Processando tarefa para ${from}`);
 
-    // --resume latest: Mantém o histórico da conversa
-    // --yolo: Execução autônoma de ferramentas
-    // -o text: Saída em texto puro no stdout
-    const args = ['-p', `"${userMessage.replace(/"/g, '\\"')}"`, '--resume', 'latest', '--yolo', '-o', 'text'];
+    const systemPrompt = `Você é o CONJONE, o Gestor Soberano desta Fábrica de Software. Sua missão é coordenar a equipe de robôs e manter o Dono (usuário) sempre informado com clareza e autoridade.
+
+Sua equipe atual:
+- 👷 **Yung Wan**: Desenvolvedor Worker focado em execução de código e correções.
+
+Regras de Operação:
+1. **Identificação de Repo**: Você está na pasta /GitHub. Antes de criar uma issue, identifique qual repositório o Dono mencionou. Liste os diretórios se necessário.
+2. **Execução Real**: Você DEVE usar suas ferramentas de terminal para executar os comandos 'gh issue create'. NÃO APENAS DIGA QUE VAI FAZER, FAÇA!
+3. **Diretório**: Mude para o diretório do projeto antes de rodar o comando gh. Exemplo: 'cd projeto && gh issue create ...'.
+4. **Delegação**: Sempre adicione a label 'worker:yung-wan' para que o Yung Wan veja a tarefa.
+5. **Confirmação**: Só diga que delegou APÓS ter executado o comando com sucesso.
+
+Mensagem do Dono: ${userMessage}`;
+
+    const args = ['-p', `"${systemPrompt.replace(/"/g, '\\"')}"`, '--resume', 'latest', '--yolo', '-o', 'text'];
     
     const child = spawn('gemini', args, {
-      cwd: path.resolve(process.cwd(), '..'), // Inicia no diretório pai (GitHub)
+      cwd: path.resolve(process.cwd(), '..'),
       env: { ...process.env, FORCE_COLOR: "0" },
       shell: true
     });
 
     let stdoutData = "";
-    let stderrData = "";
-
-    child.stdout.on('data', (data) => {
-      const chunk = data.toString();
-      stdoutData += chunk;
-      console.log(`[STDOUT] ${chunk}`);
-    });
-
-    child.stderr.on('data', (data) => {
-      const chunk = data.toString();
-      stderrData += chunk;
-      // Não logamos o stderr completo para não poluir o histórico do usuário,
-      // pois o Gemini CLI joga logs de carregamento lá.
-    });
+    child.stdout.on('data', (data) => { stdoutData += data.toString(); });
 
     child.on('close', async (code) => {
-      const response = this.cleanOutput(stdoutData);
-      
-      if (response.trim()) {
+      const response = stdoutData.replace(/\x1B\[[0-9;]*[JKmsu]/g, '').trim();
+      if (response) {
         await whatsapp.sendMessage(from, response);
-        logger.log('GEMINI', `Resposta enviada para ${from}`);
-      } else {
-        // Se o stdout estiver vazio, mas o processo terminou bem, 
-        // verificamos se houve erro real no stderr.
-        if (code !== 0) {
-          logger.log('ERRO', `Gemini falhou (Code ${code}). Stderr: ${stderrData.substring(0, 50)}...`);
-          await whatsapp.sendMessage(from, "❌ O motor agêntico encontrou um erro ao processar seu comando.");
-        } else {
-          logger.log('AVISO', `Gemini retornou vazio para ${from}`);
-          await whatsapp.sendMessage(from, "⚠️ O comando foi processado, mas não houve retorno visual.");
-        }
+        logger.log('GEMINI', `Gestor respondeu: "${response.substring(0, 50)}..."`);
       }
     });
-  }
-
-  private cleanOutput(text: string) {
-    return text
-      .replace(/\x1B\[[0-9;]*[JKmsu]/g, '') // Remove ANSI
-      .trim();
   }
 }
