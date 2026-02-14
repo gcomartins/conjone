@@ -23,6 +23,7 @@ function printGradientLogo(logo: string) {
 
 async function displayInterface() {
   console.clear();
+  console.log('\n\n\n');
   
   // Exibe a Logo com degradê laranja
   printGradientLogo(fullConjoneLogo);
