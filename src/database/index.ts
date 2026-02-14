@@ -4,6 +4,11 @@ import path from 'path';
 const dbPath = path.resolve(process.cwd(), 'data/conjone.sqlite');
 const db = new Database(dbPath, { create: true });
 
+// Habilita o modo WAL (Write-Ahead Logging) para permitir leituras simultâneas 
+// e define um timeout para evitar o erro 'database is locked'
+db.exec('PRAGMA journal_mode = WAL;');
+db.exec('PRAGMA busy_timeout = 5000;');
+
 db.run(`
   CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,

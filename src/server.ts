@@ -21,31 +21,43 @@ async function bootstrap() {
       logger.log('WHATSAPP', `Mensagem recebida de ${from}: ${text.substring(0, 20)}...`);
 
       try {
-        // O motor agora opera diretamente com o Gemini CLI local
         await gemini.chat(from, text);
-        logger.log('GEMINI', `Comando disparado para o terminal de ${from}`);
+        logger.log('GEMINI', `Comando enviado para o motor.`);
       } catch (geminiError: any) {
-        logger.log('ERRO', `Falha no motor agêntico: ${geminiError.message}`);
-        await whatsapp.sendMessage(from, `❌ *FALHA NO MOTOR AGÊNTICO*\n${geminiError.message}`);
+        logger.log('ERRO', `Falha no disparo: ${geminiError.message}`);
+        await whatsapp.sendMessage(from, `❌ *FALHA NO DISPARO*\n${geminiError.message}`);
       }
     });
   };
 
   const sessionPath = path.resolve(process.cwd(), 'data/session/creds.json');
   if (fs.existsSync(sessionPath)) {
-    logger.log('SISTEMA', 'Sessão encontrada. Conectando WhatsApp automaticamente...');
+    logger.log('SISTEMA', 'Conectando WhatsApp...');
     const sock = await whatsapp.start();
     setupEvents(sock);
   }
 
+  // Monitor de comandos e notificações
   setInterval(async () => {
+    // 1. Comando Manual do Menu
     const cmd = db.prepare('SELECT value FROM system_control WHERE key = "cmd"').get() as any;
     if (cmd?.value === 'CONNECT_WA') {
       db.prepare('DELETE FROM system_control WHERE key = "cmd"').run();
       if (!whatsapp.sock) {
-        logger.log('WHATSAPP', 'Iniciando socket Baileys via comando manual...');
         const sock = await whatsapp.start();
         setupEvents(sock);
+      }
+    }
+
+    // 2. Notificações de Auditoria dos Workers
+    const notify = db.prepare('SELECT value FROM system_control WHERE key = "notify_owner"').get() as any;
+    if (notify?.value && whatsapp.sock) {
+      db.prepare('DELETE FROM system_control WHERE key = "notify_owner"').run();
+      
+      // Busca o seu número para enviar a auditoria
+      const owner: any = db.prepare('SELECT whatsapp_number FROM users ORDER BY created_at ASC LIMIT 1').get();
+      if (owner?.whatsapp_number) {
+        await whatsapp.sendMessage(owner.whatsapp_number, `📊 *AUDITORIA:* ${notify.value}`);
       }
     }
   }, 2000);
@@ -53,5 +65,4 @@ async function bootstrap() {
 
 bootstrap().catch(err => {
   logger.log('CRÍTICO', err.message);
-  console.error(err);
 });

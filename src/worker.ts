@@ -8,10 +8,13 @@ import db from "./database";
 
 const execPromise = promisify(exec);
 
-// Identidade do Worker
+/**
+ * WORKER: Yung Wan
+ * ENGINE: Jules Extension (Gemini CLI)
+ */
 const WORKER_NAME = "Yung Wan";
 const WORKER_LABEL = "worker:yung-wan";
-const GITHUB_ROOT = path.resolve(process.cwd(), '..'); 
+const CONJONE_REPOS_ROOT = path.resolve(process.cwd(), '../conjone-repos'); 
 const POLLING_INTERVAL = 30000;
 
 async function notifyOwner(message: string) {
@@ -23,11 +26,14 @@ async function notifyOwner(message: string) {
 }
 
 async function runWorker() {
-  logger.log('WORKER', `👷 Auditoria iniciada. ${WORKER_NAME} vigiando /GitHub...`);
+  logger.log('WORKER', `👷 Operário ${WORKER_NAME} armado com a extensão JULES. Vigiando /conjone-repos...`);
+
+  if (!fs.existsSync(CONJONE_REPOS_ROOT)) {
+    fs.mkdirSync(CONJONE_REPOS_ROOT, { recursive: true });
+  }
 
   while (true) {
     try {
-      // O Worker processa apenas uma tarefa por ciclo, garantindo foco total.
       await patrolAndWork();
     } catch (e: any) {
       logger.log('ERRO', `[${WORKER_NAME}] Falha no ciclo: ${e.message}`);
@@ -37,8 +43,8 @@ async function runWorker() {
 }
 
 async function patrolAndWork() {
-  const repos = fs.readdirSync(GITHUB_ROOT).filter(file => {
-    const fullPath = path.join(GITHUB_ROOT, file);
+  const repos = fs.readdirSync(CONJONE_REPOS_ROOT).filter(file => {
+    const fullPath = path.join(CONJONE_REPOS_ROOT, file);
     try {
       return fs.statSync(fullPath).isDirectory() && fs.existsSync(path.join(fullPath, '.git'));
     } catch {
@@ -47,22 +53,23 @@ async function patrolAndWork() {
   });
 
   for (const repoName of repos) {
-    // TRAVA DE SEGURANÇA: O Worker nunca deve operar no projeto do próprio Conjone
-    if (repoName.toLowerCase() === 'conjone') continue;
-
-    const repoPath = path.join(GITHUB_ROOT, repoName);
-    
-    try {
-      // Busca a primeira issue designada para este worker
-      const { stdout } = await execPromise(`gh issue list --label "${WORKER_LABEL}" --state open --json number,title,body --limit 1`, { cwd: repoPath });
-      const issues = JSON.parse(stdout);
-
-      if (issues.length > 0) {
-        await processIssue(repoPath, issues[0]);
-        return; // Sai após processar UMA issue para garantir que não atue em várias ao mesmo tempo
-      }
-    } catch (e) {}
+    const repoPath = path.join(CONJONE_REPOS_ROOT, repoName);
+    const hasWork = await checkRepoForWork(repoPath);
+    if (hasWork) return; 
   }
+}
+
+async function checkRepoForWork(repoPath: string): Promise<boolean> {
+  try {
+    const { stdout } = await execPromise(`gh issue list --label "${WORKER_LABEL}" --state open --json number,title,body --limit 1`, { cwd: repoPath });
+    const issues = JSON.parse(stdout);
+
+    if (issues.length > 0) {
+      await processIssue(repoPath, issues[0]);
+      return true;
+    }
+  } catch (e) {}
+  return false;
 }
 
 async function processIssue(repoPath: string, issue: any) {
@@ -70,30 +77,26 @@ async function processIssue(repoPath: string, issue: any) {
   const repoName = path.basename(repoPath);
   const branchName = `dev/${WORKER_NAME.toLowerCase().replace(/\s+/g, '-')}/issue-${issueId}`;
 
-  logger.log('WORKER', `🚀 [${repoName}] Atuando na tarefa #${issueId}`);
-  await notifyOwner(`👷 *${WORKER_NAME}* assumiu a tarefa!\n📂 *Repo:* ${repoName}\n🆔 *Issue:* #${issueId}\n📝 *Título:* ${issue.title}`);
+  logger.log('WORKER', `🚀 [${repoName}] Invocando JULES para a tarefa #${issueId}`);
+  await notifyOwner(`👷 *${WORKER_NAME}* acionou o motor *JULES* para resolver uma tarefa!\n📂 *Repo:* ${repoName}\n🆔 *Issue:* #${issueId}\n📝 *Título:* ${issue.title}`);
 
   try {
-    // 1. GARANTIR REPOSITÓRIO LIMPO
-    logger.log('WORKER', `🧹 Limpando repositório ${repoName}...`);
+    // 1. LIMPEZA E PREPARAÇÃO
     await execPromise(`git reset --hard && git clean -fd`, { cwd: repoPath });
-    
-    // 2. IDENTIFICAR E VOLTAR PARA BRANCH PRINCIPAL
     const { stdout: mainBranchRaw } = await execPromise(`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`, { cwd: repoPath });
     const mainBranch = mainBranchRaw.trim() || 'master';
-    
-    logger.log('WORKER', `🌿 Sincronizando com a branch ${mainBranch}...`);
     await execPromise(`git checkout ${mainBranch} && git pull origin ${mainBranch}`, { cwd: repoPath });
 
-    // 3. ATUALIZAR STATUS NO GITHUB (IN PROGRESS)
-    await execPromise(`gh issue edit ${issueId} --add-label "status:in-progress"`, { cwd: repoPath }).catch(() => {});
-    await execPromise(`gh issue comment ${issueId} --body "👷 **${WORKER_NAME}:** Iniciando desenvolvimento. Branch baseada na \`${mainBranch}\`."`, { cwd: repoPath });
+    // 2. STATUS IN PROGRESS
+    await execPromise(`gh issue edit ${issueId} --add-label "status:in-progress"`, { cwd: repoPath });
+    await execPromise(`gh issue comment ${issueId} --body "👷 **${WORKER_NAME}:** Delegando execução para a extensão **JULES**. \nBranch base: \`${mainBranch}\`."`, { cwd: repoPath });
 
-    // 4. CRIAR BRANCH A PARTIR DA MAIN
-    await notifyOwner(`⚙️ *${WORKER_NAME}* criando branch \`${branchName}\` a partir da \`${mainBranch}\`...`);
-    await execPromise(`git checkout -b ${branchName}`, { cwd: repoPath }).catch(() => execPromise(`git checkout ${branchName}`, { cwd: repoPath }));
-
-    const prompt = `Agente: ${WORKER_NAME}\nRepo: ${repoName}\nTarefa: #${issueId}\nDescrição: ${issue.body}\n\nAnalise o projeto e implemente a solução. Não faça commits.`;
+    // 3. INVOCAÇÃO DO JULES
+    // Instruímos o Gemini CLI a usar especificamente a extensão Jules
+    const prompt = `Use a extensão Jules para resolver a issue #${issueId} (${issue.title}) neste repositório. 
+A descrição da issue é: ${issue.body}
+Implemente a solução, rode os testes e certifique-se de que o código está robusto.
+Não faça commits, eu farei a finalização.`;
 
     const child = spawn('gemini', ['-p', `"${prompt.replace(/"/g, '\\"')}"`, '--yolo'], {
       cwd: repoPath,
@@ -103,36 +106,34 @@ async function processIssue(repoPath: string, issue: any) {
 
     await new Promise((resolve) => child.on('close', resolve));
 
-    // 5. VERIFICAR MUDANÇAS E COMMITAR
+    // 4. VERIFICAR MUDANÇAS E FINALIZAR
     const { stdout: status } = await execPromise(`git status --porcelain`, { cwd: repoPath });
     if (!status.trim()) {
-      throw new Error("O Gemini CLI não realizou alterações nos arquivos.");
+      throw new Error("O motor JULES não realizou alterações nos arquivos.");
     }
 
-    await notifyOwner(`💾 *${WORKER_NAME}* finalizou o código. Abrindo Pull Request...`);
+    await notifyOwner(`💾 *JULES* finalizou o código. *${WORKER_NAME}* enviando PR...`);
 
+    await execPromise(`git checkout -b ${branchName}`, { cwd: repoPath }).catch(() => execPromise(`git checkout ${branchName}`, { cwd: repoPath }));
     await execPromise(`git add .`, { cwd: repoPath });
-    await execPromise(`git commit -m "feat(${WORKER_NAME.toLowerCase()}): resolved #${issueId}"`, { cwd: repoPath });
+    await execPromise(`git commit -m "feat(jules): resolved #${issueId} via ${WORKER_NAME}"`, { cwd: repoPath });
     await execPromise(`git push origin ${branchName} --force`, { cwd: repoPath });
     
-    await execPromise(`gh pr create --title "[${WORKER_NAME}] ${issue.title}" --body "Trabalho concluído por ${WORKER_NAME} no repo ${repoName}.\n\nResolves #${issueId}" --head ${branchName}`, { cwd: repoPath });
+    await execPromise(`gh pr create --title "[JULES] ${issue.title}" --body "Trabalho realizado pelo motor JULES via ${WORKER_NAME}.\n\nResolves #${issueId}" --head ${branchName}`, { cwd: repoPath });
     
-    // 6. ATUALIZAR STATUS FINAL (REMOVE IN-PROGRESS, ADD DONE)
+    // 5. STATUS DONE
     await execPromise(`gh issue edit ${issueId} --remove-label "${WORKER_LABEL}" --remove-label "status:in-progress" --add-label "status:done"`, { cwd: repoPath });
     
-    await notifyOwner(`✅ *TAREFA PRONTA!*\n👷 *Agente:* ${WORKER_NAME}\n📂 *Repo:* ${repoName}\n🆔 *Issue:* #${issueId}\n🚀 *Status:* Trocado de 'in-progress' para 'done'. PR Aberto.`);
+    await notifyOwner(`✅ *JULES CONCLUIU!*\n👷 *Agente:* ${WORKER_NAME}\n📂 *Repo:* ${repoName}\n🆔 *Issue:* #${issueId}\n🚀 *Status:* PR Aberto.`);
     
-    logger.log('WORKER', `✅ [${repoName}] Tarefa #${issueId} concluída com sucesso.`);
+    logger.log('WORKER', `✅ [${repoName}] Jules concluiu a tarefa #${issueId}`);
   } catch (err: any) {
-    await notifyOwner(`❌ *ERRO NA TAREFA #${issueId}*\n👷 *Agente:* ${WORKER_NAME}\n⚠️ *Erro:* ${err.message}`);
-    logger.log('ERRO', `[${WORKER_NAME}] Falha em ${repoName}: ${err.message}`);
-    
-    try {
-      await execPromise(`gh issue comment ${issueId} --body "❌ **${WORKER_NAME}:** Falha ao processar tarefa. \n\n**Erro:** ${err.message}"`, { cwd: repoPath });
-    } catch (e) {}
+    await notifyOwner(`❌ *ERRO NO JULES (Issue #${issueId})*\n👷 *Agente:* ${WORKER_NAME}\n⚠️ *Erro:* ${err.message}`);
+    logger.log('ERRO', `[JULES] Falha em ${repoName}: ${err.message}`);
+    await execPromise(`gh issue comment ${issueId} --body "❌ **${WORKER_NAME}:** O motor JULES falhou: ${err.message}"`, { cwd: repoPath }).catch(()=>{});
   }
 
-  // 7. VOLTAR PARA BRANCH PRINCIPAL E LIMPAR
+  // Reset final
   try {
     const { stdout: mainBranchRaw } = await execPromise(`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`, { cwd: repoPath });
     const mainBranch = mainBranchRaw.trim() || 'master';
