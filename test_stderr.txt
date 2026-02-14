@@ -1,0 +1,37 @@
+YOLO mode is enabled. All tool calls will be automatically approved.
+Loaded cached credentials.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Loading extension: context7
+Loading extension: firebase
+Loading extension: gcloud
+Loading extension: gemini-cli-security
+Loading extension: google-maps-platform
+Loading extension: google-workspace
+Server 'osvScanner' supports tool updates. Listening for changes...
+Server 'osvScanner' supports prompt updates. Listening for changes...
+Server 'securityServer' supports tool updates. Listening for changes...
+Server 'securityServer' supports prompt updates. Listening for changes...
+Server 'google-workspace' supports tool updates. Listening for changes...
+Error during discovery for MCP server 'gcloud': MCP error -32000: Connection closedServer 'context7' supports tool updates. Listening for changes...
+Server 'remotion' supports tool updates. Listening for changes...
+Server 'firebase' supports tool updates. Listening for changes...
+Server 'firebase' supports prompt updates. Listening for changes...
+Registering extension themes for "firebase": [
+  {
+    name: 'firebase-default-dark',
+    type: 'custom',
+    background: { primary: '#212121', diff: [Object] },
+    text: {
+      primary: '#E8E8E8',
+      secondary: '#A6A6A6',
+      link: '#7CACF8',
+      accent: '#0B57D0',
+      response: '#7CACF8'
+    },
+    status: { success: '#6DD58C', warning: '#FFB300', error: '#E46962' },
+    border: { default: '#2F3032', focused: '#2F3032' },
+    ui: { comment: '#DD2C00', symbol: '#2F3032', gradient: [Array] }
+  }
+]
+Registered theme: firebase-default-dark (firebase)
+Hook registry initialized with 0 hook entries

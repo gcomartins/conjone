@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conjone | Seu Assistente Pessoal Soberano</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; }
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="text-slate-200">
+    <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto">
+        <div class="text-2xl font-bold gradient-text">CONJONE</div>
+        <div class="space-x-6 hidden md:flex">
+            <a href="#features" class="hover:text-sky-400 transition">Recursos</a>
+            <a href="#setup" class="hover:text-sky-400 transition">Instalação</a>
+            <a href="https://github.com/seu-user/conjone" class="bg-sky-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-sky-600 transition">GitHub</a>
+        </div>
+    </nav>
+
+    <header class="max-w-4xl mx-auto text-center py-20 px-6">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-6">Seu assistente agêntico, <span class="gradient-text">sob seu controle.</span></h1>
+        <p class="text-xl text-slate-400 mb-10 leading-relaxed">
+            O Conjone integra o poder do Gemini com seu WhatsApp e Google Workspace. 
+            Hospedagem própria, privacidade absoluta e zero configurações complexas.
+        </p>
+        <div class="flex flex-col md:flex-row justify-center gap-4">
+            <a href="/download/conjone.zip" class="bg-white text-slate-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-200 transition shadow-lg shadow-sky-500/20">
+                Baixar Conjone (Beta)
+            </a>
+            <a href="#setup" class="border border-slate-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition">
+                Ver Guia de Setup
+            </a>
+        </div>
+    </header>
+
+    <section id="features" class="max-w-6xl mx-auto py-20 px-6 grid md:grid-cols-3 gap-8">
+        <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700">
+            <div class="text-sky-400 text-3xl mb-4">💬</div>
+            <h3 class="text-xl font-bold mb-2">WhatsApp Nativo</h3>
+            <p class="text-slate-400">Gerencie sua vida digital sem sair do chat. O Conjone é seu contato de confiança.</p>
+        </div>
+        <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700">
+            <div class="text-sky-400 text-3xl mb-4">📅</div>
+            <h3 class="text-xl font-bold mb-2">Google Workspace</h3>
+            <p class="text-slate-400">Resumo de e-mails, criação de reuniões e busca no Drive com linguagem natural.</p>
+        </div>
+        <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700">
+            <div class="text-sky-400 text-3xl mb-4">🛡️</div>
+            <h3 class="text-xl font-bold mb-2">100% Soberano</h3>
+            <p class="text-slate-400">Os dados ficam no seu PC. Você usa sua própria cota do Gemini. Sem mensalidades.</p>
+        </div>
+    </section>
+
+    <section id="setup" class="max-w-4xl mx-auto py-20 px-6 bg-slate-900 rounded-3xl border border-slate-800">
+        <h2 class="text-3xl font-bold text-center mb-12">Instalação em 3 passos</h2>
+        <div class="space-y-8">
+            <div class="flex gap-6">
+                <div class="bg-sky-500/10 text-sky-400 w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl border border-sky-500/20">1</div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-1">Baixe e Extraia</h4>
+                    <p class="text-slate-400">Extraia o arquivo .zip em uma pasta no seu computador.</p>
+                </div>
+            </div>
+            <div class="flex gap-6">
+                <div class="bg-sky-500/10 text-sky-400 w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl border border-sky-500/20">2</div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-1">Execute o Start</h4>
+                    <p class="text-slate-400">Clique duas vezes no arquivo <code>start.bat</code> (Windows) ou rode <code>./start.sh</code> (Mac/Linux).</p>
+                </div>
+            </div>
+            <div class="flex gap-6">
+                <div class="bg-sky-500/10 text-sky-400 w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl border border-sky-500/20">3</div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-1">Conecte seu Zap</h4>
+                    <p class="text-slate-400">Escaneie o QR Code que aparecerá no terminal e pronto! O Conjone falará com você.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-10 text-center text-slate-500 text-sm">
+        &copy; 2026 Conjone Open Source Project. Feito com Bun + Gemini.
+    </footer>
+</body>
+</html>

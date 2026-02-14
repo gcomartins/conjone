@@ -1,0 +1,110 @@
+import inquirer from 'inquirer';
+import db from './database';
+import { googleService } from './services/google';
+import { logger } from './services/logger';
+import { fullConjoneLogo } from './ui/ascii';
+
+// Cores ANSI para o degradê laranja/ouro
+const ORANGE = '\x1b[38;5;208m';
+const GOLD = '\x1b[38;5;214m';
+const YELLOW = '\x1b[38;5;226m';
+const RESET = '\x1b[0m';
+const BOLD = '\x1b[1m';
+
+function printGradientLogo(logo: string) {
+  const lines = logo.split('\n').filter(l => l.trim().length > 0);
+  const colors = [ORANGE, GOLD, GOLD, YELLOW, YELLOW, GOLD, GOLD, ORANGE];
+  
+  lines.forEach((line, i) => {
+    const color = colors[i % colors.length];
+    console.log(`${color}${line}${RESET}`);
+  });
+}
+
+async function displayInterface() {
+  console.clear();
+  
+  // Exibe a Logo com degradê laranja
+  printGradientLogo(fullConjoneLogo);
+  
+  console.log(`\n  ${BOLD}${GOLD}🚀 PAINEL DE CONTROLE SOBERANO${RESET}`);
+  console.log(`  \x1b[2m${ORANGE}──────────────────────────────────────────────────────────────────────────────────${RESET}`);
+
+  // Mostrar Histórico
+  console.log(`\n  ${BOLD}${YELLOW}📜 ÚLTIMAS ATIVIDADES:${RESET}`);
+  const history = logger.getHistory(5);
+  if (history.length === 0) {
+    console.log('    \x1b[2m(Nenhuma atividade registrada)\x1b[0m');
+  } else {
+    history.reverse().forEach(log => {
+      const time = new Date(log.timestamp).toLocaleTimeString();
+      const component = log.component.padEnd(10);
+      const color = log.component === 'ERRO' || log.component === 'SEGURANÇA' ? '\x1b[31m' : '\x1b[36m';
+      console.log(`    \x1b[2m[${time}]\x1b[0m ${color}${component}${RESET} │ ${log.message}`);
+    });
+  }
+  console.log(`  \x1b[2m${ORANGE}──────────────────────────────────────────────────────────────────────────────────${RESET}\n`);
+
+  const { option } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'option',
+      message: 'O que deseja fazer?',
+      choices: [
+        { name: '📱 1. Conectar WhatsApp (Baileys)', value: 'whatsapp' },
+        { name: '🔗 2. Autenticar Google Cloud (OAuth2)', value: 'google' },
+        { name: '🧹 3. Limpar Histórico', value: 'clear' },
+        { name: '❌ 4. Sair', value: 'exit' }
+      ]
+    }
+  ]);
+
+  switch (option) {
+    case 'whatsapp':
+      logger.log('CLI', 'Solicitada conexão WhatsApp');
+      db.prepare('INSERT OR REPLACE INTO system_control (key, value) VALUES ("cmd", "CONNECT_WA")').run();
+      console.log(`\n${GOLD}⏳ Comando enviado. Verifique o QR Code nos logs do motor.${RESET}`);
+      await new Promise(r => setTimeout(r, 2000));
+      displayInterface();
+      break;
+
+    case 'google':
+      await authenticateGoogle();
+      break;
+
+    case 'clear':
+      db.run('DELETE FROM activity_logs');
+      logger.log('SISTEMA', 'Histórico limpo');
+      displayInterface();
+      break;
+    
+    case 'exit':
+      console.log(`\n${ORANGE}Até logo, Soberano! 👋${RESET}`);
+      process.exit(0);
+  }
+}
+
+async function authenticateGoogle() {
+  console.log(`\n${BOLD}${GOLD}--- 🔐 AUTENTICAÇÃO GOOGLE CLOUD ---${RESET}`);
+  const authUrl = googleService.generateAuthUrl('global_admin');
+  console.log(`\n${ORANGE}Acesse a URL para autenticar:${RESET}`);
+  console.log(`\x1b[36m${authUrl}${RESET}`);
+  
+  import('node:child_process').then(cp => cp.exec(`open "${authUrl}"`));
+
+  await inquirer.prompt([{ type: 'input', name: 'wait', message: '\nApós autorizar no navegador, pressione [ENTER] para verificar status...' }]);
+
+  const status: any = db.prepare('SELECT value FROM system_control WHERE key = "google_auth_status"').get();
+  if (status?.value === 'COMPLETE') {
+    logger.log('GOOGLE', 'Integração ativa');
+    console.log(`\n${BOLD}\x1b[32m✅ Sucesso! Integração ativa.${RESET}`);
+  } else {
+    logger.log('GOOGLE', 'Falha ao detectar login');
+    console.log(`\n\x1b[31m⚠️ Login não detectado.${RESET}`);
+  }
+  
+  await new Promise(r => setTimeout(r => r, 2000));
+  displayInterface();
+}
+
+displayInterface();
