@@ -1,6 +1,5 @@
 import inquirer from 'inquirer';
 import db from './database';
-import { googleService } from './services/google';
 import { logger } from './services/logger';
 import { fullConjoneLogo } from './ui/ascii';
 
@@ -53,9 +52,8 @@ async function displayInterface() {
       message: 'O que deseja fazer?',
       choices: [
         { name: '📱 1. Conectar WhatsApp (Baileys)', value: 'whatsapp' },
-        { name: '🔗 2. Autenticar Google Cloud (OAuth2)', value: 'google' },
-        { name: '🧹 3. Limpar Histórico', value: 'clear' },
-        { name: '❌ 4. Sair', value: 'exit' }
+        { name: '🧹 2. Limpar Histórico', value: 'clear' },
+        { name: '❌ 3. Sair', value: 'exit' }
       ]
     }
   ]);
@@ -69,10 +67,6 @@ async function displayInterface() {
       displayInterface();
       break;
 
-    case 'google':
-      await authenticateGoogle();
-      break;
-
     case 'clear':
       db.run('DELETE FROM activity_logs');
       logger.log('SISTEMA', 'Histórico limpo');
@@ -83,29 +77,6 @@ async function displayInterface() {
       console.log(`\n${ORANGE}Até logo, Soberano! 👋${RESET}`);
       process.exit(0);
   }
-}
-
-async function authenticateGoogle() {
-  console.log(`\n${BOLD}${GOLD}--- 🔐 AUTENTICAÇÃO GOOGLE CLOUD ---${RESET}`);
-  const authUrl = googleService.generateAuthUrl('global_admin');
-  console.log(`\n${ORANGE}Acesse a URL para autenticar:${RESET}`);
-  console.log(`\x1b[36m${authUrl}${RESET}`);
-  
-  import('node:child_process').then(cp => cp.exec(`open "${authUrl}"`));
-
-  await inquirer.prompt([{ type: 'input', name: 'wait', message: '\nApós autorizar no navegador, pressione [ENTER] para verificar status...' }]);
-
-  const status: any = db.prepare('SELECT value FROM system_control WHERE key = "google_auth_status"').get();
-  if (status?.value === 'COMPLETE') {
-    logger.log('GOOGLE', 'Integração ativa');
-    console.log(`\n${BOLD}\x1b[32m✅ Sucesso! Integração ativa.${RESET}`);
-  } else {
-    logger.log('GOOGLE', 'Falha ao detectar login');
-    console.log(`\n\x1b[31m⚠️ Login não detectado.${RESET}`);
-  }
-  
-  await new Promise(r => setTimeout(r => r, 2000));
-  displayInterface();
 }
 
 displayInterface();
