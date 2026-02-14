@@ -27,15 +27,16 @@ async function runWorker() {
 
   while (true) {
     try {
-      await patrolRepositories();
+      // O Worker processa apenas uma tarefa por ciclo, garantindo foco total.
+      await patrolAndWork();
     } catch (e: any) {
-      logger.log('ERRO', `[${WORKER_NAME}] Falha na patrulha: ${e.message}`);
+      logger.log('ERRO', `[${WORKER_NAME}] Falha no ciclo: ${e.message}`);
     }
     await new Promise(r => setTimeout(r, POLLING_INTERVAL));
   }
 }
 
-async function patrolRepositories() {
+async function patrolAndWork() {
   const repos = fs.readdirSync(GITHUB_ROOT).filter(file => {
     const fullPath = path.join(GITHUB_ROOT, file);
     try {
@@ -46,14 +47,19 @@ async function patrolRepositories() {
   });
 
   for (const repoName of repos) {
+    // TRAVA DE SEGURANÇA: O Worker nunca deve operar no projeto do próprio Conjone
+    if (repoName.toLowerCase() === 'conjone') continue;
+
     const repoPath = path.join(GITHUB_ROOT, repoName);
     
     try {
+      // Busca a primeira issue designada para este worker
       const { stdout } = await execPromise(`gh issue list --label "${WORKER_LABEL}" --state open --json number,title,body --limit 1`, { cwd: repoPath });
       const issues = JSON.parse(stdout);
 
       if (issues.length > 0) {
         await processIssue(repoPath, issues[0]);
+        return; // Sai após processar UMA issue para garantir que não atue em várias ao mesmo tempo
       }
     } catch (e) {}
   }
@@ -64,36 +70,32 @@ async function processIssue(repoPath: string, issue: any) {
   const repoName = path.basename(repoPath);
   const branchName = `dev/${WORKER_NAME.toLowerCase().replace(/\s+/g, '-')}/issue-${issueId}`;
 
-  logger.log('WORKER', `🔍 ${WORKER_NAME} identificou tarefa #${issueId} no repo "${repoName}"`);
-  await notifyOwner(`👷 *${WORKER_NAME}* identificou uma nova tarefa!
-📂 *Repo:* ${repoName}
-🆔 *Issue:* #${issueId}
-📝 *Título:* ${issue.title}`);
+  logger.log('WORKER', `🚀 [${repoName}] Atuando na tarefa #${issueId}`);
+  await notifyOwner(`👷 *${WORKER_NAME}* assumiu a tarefa!\n📂 *Repo:* ${repoName}\n🆔 *Issue:* #${issueId}\n📝 *Título:* ${issue.title}`);
 
   try {
-    // 1. Garantir estado limpo
-    logger.log('WORKER', `🧹 Limpando estado do repo ${repoName}...`);
+    // 1. GARANTIR REPOSITÓRIO LIMPO
+    logger.log('WORKER', `🧹 Limpando repositório ${repoName}...`);
     await execPromise(`git reset --hard && git clean -fd`, { cwd: repoPath });
     
-    // 2. Sincronizar com a branch principal
+    // 2. IDENTIFICAR E VOLTAR PARA BRANCH PRINCIPAL
     const { stdout: mainBranchRaw } = await execPromise(`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`, { cwd: repoPath });
     const mainBranch = mainBranchRaw.trim() || 'master';
     
+    logger.log('WORKER', `🌿 Sincronizando com a branch ${mainBranch}...`);
     await execPromise(`git checkout ${mainBranch} && git pull origin ${mainBranch}`, { cwd: repoPath });
 
-    // 3. Criar ou mudar para a branch da issue
-    await notifyOwner(`⚙️ *${WORKER_NAME}* iniciando trabalhos...
-🌿 *Branch:* `${branchName}``);
+    // 3. ATUALIZAR STATUS NO GITHUB (IN PROGRESS)
+    await execPromise(`gh issue edit ${issueId} --add-label "status:in-progress"`, { cwd: repoPath }).catch(() => {});
+    await execPromise(`gh issue comment ${issueId} --body "👷 **${WORKER_NAME}:** Iniciando desenvolvimento. Branch baseada na \`${mainBranch}\`."`, { cwd: repoPath });
+
+    // 4. CRIAR BRANCH A PARTIR DA MAIN
+    await notifyOwner(`⚙️ *${WORKER_NAME}* criando branch \`${branchName}\` a partir da \`${mainBranch}\`...`);
     await execPromise(`git checkout -b ${branchName}`, { cwd: repoPath }).catch(() => execPromise(`git checkout ${branchName}`, { cwd: repoPath }));
 
-    const prompt = `Agente: ${WORKER_NAME}
-Repo: ${repoName}
-Tarefa: #${issueId}
-Descrição: ${issue.body}
+    const prompt = `Agente: ${WORKER_NAME}\nRepo: ${repoName}\nTarefa: #${issueId}\nDescrição: ${issue.body}\n\nAnalise o projeto e implemente a solução. Não faça commits.`;
 
-Analise o projeto e implemente a solução. Não faça commits.`;
-
-    const child = spawn('gemini', ['-p', `"${prompt.replace(/"/g, '"')}"`, '--yolo'], {
+    const child = spawn('gemini', ['-p', `"${prompt.replace(/"/g, '\\"')}"`, '--yolo'], {
       cwd: repoPath,
       env: { ...process.env, FORCE_COLOR: "0" },
       shell: true
@@ -101,50 +103,40 @@ Analise o projeto e implemente a solução. Não faça commits.`;
 
     await new Promise((resolve) => child.on('close', resolve));
 
-    // 4. Verificar se houve mudanças
+    // 5. VERIFICAR MUDANÇAS E COMMITAR
     const { stdout: status } = await execPromise(`git status --porcelain`, { cwd: repoPath });
     if (!status.trim()) {
-      throw new Error("O Gemini CLI não realizou nenhuma alteração nos arquivos.");
+      throw new Error("O Gemini CLI não realizou alterações nos arquivos.");
     }
 
-    await notifyOwner(`💾 *${WORKER_NAME}* finalizou o código. Enviando commit e abrindo Pull Request...`);
+    await notifyOwner(`💾 *${WORKER_NAME}* finalizou o código. Abrindo Pull Request...`);
 
     await execPromise(`git add .`, { cwd: repoPath });
     await execPromise(`git commit -m "feat(${WORKER_NAME.toLowerCase()}): resolved #${issueId}"`, { cwd: repoPath });
     await execPromise(`git push origin ${branchName} --force`, { cwd: repoPath });
     
-    await execPromise(`gh pr create --title "[${WORKER_NAME}] ${issue.title}" --body "Trabalho concluído por ${WORKER_NAME} no repo ${repoName}.
-
-Resolves #${issueId}" --head ${branchName}`, { cwd: repoPath });
+    await execPromise(`gh pr create --title "[${WORKER_NAME}] ${issue.title}" --body "Trabalho concluído por ${WORKER_NAME} no repo ${repoName}.\n\nResolves #${issueId}" --head ${branchName}`, { cwd: repoPath });
     
-    await execPromise(`gh issue edit ${issueId} --remove-label "${WORKER_LABEL}" --add-label "status:review"`, { cwd: repoPath });
+    // 6. ATUALIZAR STATUS FINAL (REMOVE IN-PROGRESS, ADD DONE)
+    await execPromise(`gh issue edit ${issueId} --remove-label "${WORKER_LABEL}" --remove-label "status:in-progress" --add-label "status:done"`, { cwd: repoPath });
     
-    await notifyOwner(`✅ *TAREFA CONCLUÍDA!*
-👷 *Agente:* ${WORKER_NAME}
-📂 *Repo:* ${repoName}
-🆔 *Issue:* #${issueId}
-🚀 *Status:* Aguardando sua revisão (PR Aberto).`);
+    await notifyOwner(`✅ *TAREFA PRONTA!*\n👷 *Agente:* ${WORKER_NAME}\n📂 *Repo:* ${repoName}\n🆔 *Issue:* #${issueId}\n🚀 *Status:* Trocado de 'in-progress' para 'done'. PR Aberto.`);
     
-    logger.log('WORKER', `✅ [${repoName}] Tarefa #${issueId} concluída.`);
+    logger.log('WORKER', `✅ [${repoName}] Tarefa #${issueId} concluída com sucesso.`);
   } catch (err: any) {
-    await notifyOwner(`❌ *ERRO NA TAREFA #${issueId}*
-👷 *Agente:* ${WORKER_NAME}
-⚠️ *Erro:* ${err.message}`);
+    await notifyOwner(`❌ *ERRO NA TAREFA #${issueId}*\n👷 *Agente:* ${WORKER_NAME}\n⚠️ *Erro:* ${err.message}`);
     logger.log('ERRO', `[${WORKER_NAME}] Falha em ${repoName}: ${err.message}`);
     
-    // Tenta comentar na issue sobre o erro
     try {
-      await execPromise(`gh issue comment ${issueId} --body "❌ **${WORKER_NAME}:** Falha ao processar tarefa. 
-
-**Erro:** ${err.message}"`, { cwd: repoPath });
+      await execPromise(`gh issue comment ${issueId} --body "❌ **${WORKER_NAME}:** Falha ao processar tarefa. \n\n**Erro:** ${err.message}"`, { cwd: repoPath });
     } catch (e) {}
   }
 
-  // Volta para a branch principal
+  // 7. VOLTAR PARA BRANCH PRINCIPAL E LIMPAR
   try {
     const { stdout: mainBranchRaw } = await execPromise(`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`, { cwd: repoPath });
     const mainBranch = mainBranchRaw.trim() || 'master';
-    await execPromise(`git checkout ${mainBranch}`, { cwd: repoPath });
+    await execPromise(`git checkout ${mainBranch} && git reset --hard`, { cwd: repoPath });
   } catch (e) {}
 }
 
